@@ -1,10 +1,11 @@
 import React from "React";
-import { Text, View, TextInput } from "react-native";
+import { Text, View } from "react-native";
+import { connect } from "react-redux";
 import io from "socket.io-client";
 import axios from "axios";
-import { Input ,Icon} from "react-native-elements";
+import { Input, Icon } from "react-native-elements";
 
-export class Chat extends React.Component {
+class _Chat extends React.Component {
   constructor() {
     super();
     this.instance = axios.create({
@@ -21,8 +22,7 @@ export class Chat extends React.Component {
       console.log("connected");
       this.socket.on("message", text => {
         console.log(text);
-        
-        this.setState({ messages:[...this.state.messages,text] });
+        this.setState({ messages: [...this.state.messages, text] });
       });
     });
   }
@@ -35,9 +35,7 @@ export class Chat extends React.Component {
   submit() {
     const { text } = this.state;
     this.socket.emit("messages", text);
-    this.setState({ text: ""});
-    
-    
+    this.setState({ text: "" });
   }
 
   render() {
@@ -52,10 +50,12 @@ export class Chat extends React.Component {
           onChange={e => this.textHandler(e)}
           onSubmitEditing={() => this.submit()}
           placeholder="Message here"
-          rightIcon={<Icon  name='input' size={24} color="black" />}
+          rightIcon={<Icon name="input" size={24} color="black" />}
         />
-    
       </View>
     );
   }
 }
+export const Chat = connect(store => ({ img: store.img, name: store.name }))(
+  _Chat
+);

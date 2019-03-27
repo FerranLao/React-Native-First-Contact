@@ -1,9 +1,10 @@
 import React from 'react';
-import {createStackNavigator,createAppContainer} from "react-navigation"
-import {HomePage} from "./src/components/HomePage"
-import { Chat } from './src/components/Chat';
+import { Provider } from 'react-redux';
+import {store} from "./src/redux/store"
+import { Navigation } from './src/components/Navigation';
 
-const Navigation = createStackNavigator({Home:{screen:HomePage},
-Chat:{screen:Chat}})
-const App= createAppContainer(Navigation)
+
+const App= ()=><Provider store={store}>
+<Navigation></Navigation>
+</Provider>
 export default App
