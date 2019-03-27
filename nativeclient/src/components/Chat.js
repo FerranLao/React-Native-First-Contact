@@ -2,6 +2,7 @@ import React from "React";
 import { Text, View, TextInput } from "react-native";
 import io from "socket.io-client";
 import axios from "axios";
+import { Input ,Icon} from "react-native-elements";
 
 export class Chat extends React.Component {
   constructor() {
@@ -9,19 +10,19 @@ export class Chat extends React.Component {
     this.instance = axios.create({
       baseURL: "http://720ab39b.ngrok.io/",
       timeout: 2000,
-      withCredentials:true
+      withCredentials: true
     });
     this.socket = io("http://720ab39b.ngrok.io/");
-    this.state = { messages: ["hola"], text: "" };
+    this.state = { messages: ["Welcome"], text: "" };
   }
 
   componentDidMount() {
-    const { messages } = this.state;
-    this.socket.on("connection", () => {
-      console.log("connected")
-      this.socket.on("messages", text => {
-        messages.push(text)
-        this.setState({messages})
+    this.socket.on("connect", () => {
+      console.log("connected");
+      this.socket.on("message", text => {
+        console.log(text);
+        
+        this.setState({ messages:[...this.state.messages,text] });
       });
     });
   }
@@ -34,7 +35,9 @@ export class Chat extends React.Component {
   submit() {
     const { text } = this.state;
     this.socket.emit("messages", text);
-    this.setState({ text: "" });
+    this.setState({ text: ""});
+    
+    
   }
 
   render() {
@@ -44,12 +47,14 @@ export class Chat extends React.Component {
         {messages.map((e, i) => (
           <Text key={i}>{e}</Text>
         ))}
-        
-        <TextInput
+        <Input
           value={text}
           onChange={e => this.textHandler(e)}
           onSubmitEditing={() => this.submit()}
+          placeholder="Message here"
+          rightIcon={<Icon  name='input' size={24} color="black" />}
         />
+    
       </View>
     );
   }
