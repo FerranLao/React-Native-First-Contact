@@ -1,10 +1,11 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import {store} from "./src/redux/store"
-import { Navigation } from './src/components/Navigation';
+import React from "react";
+import { Provider } from "react-redux";
+import { store } from "./src/redux/store";
+import { Navigation } from "./src/components/Navigation";
 
-
-const App= ()=><Provider store={store}>
-<Navigation></Navigation>
-</Provider>
-export default App
+const App = () => (
+  <Provider store={store}>
+    <Navigation/>
+  </Provider>
+);
+export default App;
